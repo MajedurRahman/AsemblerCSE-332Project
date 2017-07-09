@@ -56,7 +56,7 @@ public class AssemblerActivity extends AppCompatActivity {
         loadData();
         initComponent();
 
-
+//
     }
 
 
