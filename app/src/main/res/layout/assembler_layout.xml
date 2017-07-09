@@ -222,7 +222,7 @@
 
                     <Button
 
-                        android:id="@+id/zeroR"
+                        android:id="@+id/zero"
                         android:layout_width="90dp"
                         android:layout_height="70dp"
                         android:onClick="onClick"
