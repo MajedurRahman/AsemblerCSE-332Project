@@ -29,29 +29,41 @@ public class ResultActivity extends AppCompatActivity {
         String ins = bundle.getString("Assembly");
         textView1 = (TextView) findViewById(R.id.instTv);
         textView2 = (TextView) findViewById(R.id.resultTv);
+
         textView2.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
         textView1.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
         textView1.setText(ins.toString());
         textView2.setText(Code.toString());
+
         writeToFile(Code,this);
-
-        SharedPreferences sh = getPreferences(Context.MODE_PRIVATE);
-
-        Toast.makeText(this, sh.getString("Code","ball"), Toast.LENGTH_SHORT).show();
+        getDataFromFile();
+        writeIntoFile(Code);
 
 
     }
 
-    private void writeToFile(String data,Context context) {
-
+    private void writeIntoFile(String data) {
 
         SharedPreferences  shp = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor= shp.edit();
-
         editor.putString("Code",data);
 
         editor.apply();
-      /*  try {
+    }
+
+    private String getDataFromFile() {
+
+        SharedPreferences sh = getPreferences(Context.MODE_PRIVATE);
+
+       String data = sh.getString("Code","Data Not Found !! ");
+
+        return data;
+    }
+
+
+    private void writeToFile(String data,Context context) {
+
+    try {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("CODE.txt", Context.MODE_PRIVATE));
             outputStreamWriter.write(data);
             outputStreamWriter.close();
@@ -59,6 +71,6 @@ public class ResultActivity extends AppCompatActivity {
         }
         catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
-        }*/
+        }
     }
 }

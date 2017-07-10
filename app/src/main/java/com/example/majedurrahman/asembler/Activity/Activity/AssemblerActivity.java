@@ -39,7 +39,8 @@ public class AssemblerActivity extends AppCompatActivity {
     ArrayList<Operation> operationArrayList;
     ArrayList<Register> registerArrayList;
 
-    ArrayList<String> codeList;
+    ArrayList<String> codeList, immediateValue;
+
 
     Button add, sub, lw, sw, addi, and, or, nor, sll, srl, bne, slt, jump, coma, semiclone, solveBtn, space, zero, s0, s1, t1;
 
@@ -55,6 +56,7 @@ public class AssemblerActivity extends AppCompatActivity {
         operationArrayList = new ArrayList<>();
         registerList = new ArrayList<>();
         registerArrayList = new ArrayList<>();
+        immediateValue = new ArrayList<>();
 
         rType = new ArrayList<>();
         tType = new ArrayList<>();
@@ -64,12 +66,11 @@ public class AssemblerActivity extends AppCompatActivity {
         loadData();
 
 
-        for (int i=0 ; i<operationArrayList.size() ; i++){
-            Log.e("Oparations " , operationArrayList.get(i).getOpName() + " " + operationArrayList.get(i).getOpType());
+        for (int i = 0; i < operationArrayList.size(); i++) {
+            Log.e("Oparations ", operationArrayList.get(i).getOpName() + " " + operationArrayList.get(i).getOpType());
         }
 
     }
-
 
 
     public void initComponent() {
@@ -242,41 +243,104 @@ public class AssemblerActivity extends AppCompatActivity {
 
         String codePart[] = code.split(" ");
         if (codePart.length == 4) {
-            Oparends oparend = new Oparends();
-            oparend.setOp(codePart[0]);
-            oparend.setRd(codePart[1]);
-            oparend.setRs(codePart[2]);
-            oparend.setRt(codePart[3]);
 
 
-            if (operationNameList.contains(oparend.getOp().toUpperCase())) {
+            if (rType.contains(codePart[0].toUpperCase())) {
 
-                if (registerList.contains(oparend.getRd().toUpperCase()) && !oparend.getRd().equalsIgnoreCase(zero.getText().toString())) {
+                Log.e(" Type ", "R type ");
+                Oparends oparend = new Oparends();
+                oparend.setOp(codePart[0].toUpperCase());
+                oparend.setRd(codePart[1].toUpperCase());
+                oparend.setRs(codePart[2].toUpperCase());
+                oparend.setRt(codePart[3].toUpperCase());
 
-                    if (registerList.contains(oparend.getRs())) {
+                if (operationNameList.contains(oparend.getOp().toUpperCase())) {
 
-                        if (registerList.contains(oparend.getRt())) {
+                    if (registerList.contains(oparend.getRd().toUpperCase()) && !oparend.getRd().equalsIgnoreCase(zero.getText().toString())) {
 
-                            getMachineCode(oparend.getOp(), oparend.getRd(), oparend.getRs(), oparend.getRt());
+                        if (registerList.contains(oparend.getRs())) {
 
+                            if (registerList.contains(oparend.getRt())) {
+
+                                getMachineCode(oparend.getOp(), oparend.getRd(), oparend.getRs(), oparend.getRt(), "R");
+
+                            } else {
+                                Toast.makeText(this, "Incorrect Statement in RT", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
-                            Toast.makeText(this, "Incorrect Statement in RT", Toast.LENGTH_SHORT).show();
+
+                            Toast.makeText(this, "Incorrect Statement in RS", Toast.LENGTH_SHORT).show();
                         }
+
+
                     } else {
 
-                        Toast.makeText(this, "Incorrect Statement in RS", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Incorrect Statement in RD !!", Toast.LENGTH_SHORT).show();
                     }
 
 
                 } else {
 
-                    Toast.makeText(this, "Incorrect Statement in RD !!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "InCorrect Operation Name !!", Toast.LENGTH_SHORT).show();
                 }
 
+            } else if (iType.contains(codePart[0].toUpperCase())) {
 
-            } else {
+                Log.e(" Type ", "I type ");
 
-                Toast.makeText(this, "InCorrect Operation Name !!", Toast.LENGTH_SHORT).show();
+                Oparends oparend = new Oparends();
+                oparend.setOp(codePart[0].toUpperCase());
+                oparend.setRd(codePart[1].toUpperCase());
+                oparend.setRs(codePart[2].toUpperCase());
+                //Here RT  used as Immediate because both of them are same bit
+                oparend.setRt(codePart[3].toUpperCase());
+
+                if (operationNameList.contains(oparend.getOp().toUpperCase())) {
+
+                    if (registerList.contains(oparend.getRd().toUpperCase()) && !oparend.getRd().equalsIgnoreCase(zero.getText().toString())) {
+
+                        if (registerList.contains(oparend.getRs())) {
+
+                            if (immediateValue.contains(oparend.getRt())) {
+
+                                if (oparend.getRt().equalsIgnoreCase("0")) {
+                                    getMachineCode(oparend.getOp(), oparend.getRd(), oparend.getRs(), "00", "I");
+
+                                } else if (oparend.getRt().equalsIgnoreCase("1")){
+                                    getMachineCode(oparend.getOp(), oparend.getRd(), oparend.getRs(), "01", "I");
+
+                                }
+                                else if (oparend.getRt().equalsIgnoreCase("2")) {
+                                    getMachineCode(oparend.getOp(), oparend.getRd(), oparend.getRs(), "10", "I");
+
+                                }
+                                else if (oparend.getRt().equalsIgnoreCase("3")){
+                                    getMachineCode(oparend.getOp(), oparend.getRd(), oparend.getRs(), "11", "I");
+
+                                }
+
+
+
+                            } else {
+                                Toast.makeText(this, "Incorrect Statement in Immediate Value !!", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+
+                            Toast.makeText(this, "Incorrect Statement in RS !!", Toast.LENGTH_SHORT).show();
+                        }
+
+
+                    } else {
+
+                        Toast.makeText(this, "Incorrect Statement in RD !!", Toast.LENGTH_SHORT).show();
+                    }
+
+
+                } else {
+
+                    Toast.makeText(this, "InCorrect Operation Name !!", Toast.LENGTH_SHORT).show();
+                }
+
             }
 
 
@@ -286,9 +350,16 @@ public class AssemblerActivity extends AppCompatActivity {
         }
     }
 
-    private void getMachineCode(String op, String rd, String rs, String rt) {
+    private void getMachineCode(String op, String rd, String rs, String rt, String type) {
+        String code = "";
+        if (type.equalsIgnoreCase("R")) {
+            code = getOpCodeValue(op.toUpperCase()) + getRegisterValue(rd) + getRegisterValue(rs) + getRegisterValue(rt);
 
-        String code = getOpCodeValue(op.toUpperCase()) + getRegisterValue(rd) + getRegisterValue(rs) + getRegisterValue(rt);
+        } else if (type.equalsIgnoreCase("I")) {
+            code = getOpCodeValue(op.toUpperCase()) + getRegisterValue(rd) + getRegisterValue(rs) + rt;
+
+        }
+
 
         this.code.append(code + "\n");
     }
@@ -378,7 +449,6 @@ public class AssemblerActivity extends AppCompatActivity {
                 }
 
                 operationArrayList.add(op);
-                Log.e("OParataion : ", op.getOpName() + " " + " " + op.getOpCode() + " Type " + op.getOpType());
 
             }
 
@@ -410,19 +480,25 @@ public class AssemblerActivity extends AppCompatActivity {
         Log.e("Load :: ", "Load All Operation Code : Size :: " + operationCodeList.size());
 
 
-        rType.add("0000");
-        rType.add("0001");
-        iType.add("0010");
-        iType.add("0011");
-        iType.add("0100");
-        rType.add("0101");
-        rType.add("0110");
-        rType.add("0111");
-        iType.add("1000");
-        rType.add("1001");
-        iType.add("1010");
-        rType.add("1011");
-        iType.add("1100");
+        rType.add("ADD");
+        rType.add("SUB");
+        iType.add("LW");
+        iType.add("SW");
+        iType.add("ADDI");
+        rType.add("AND");
+        rType.add("OR");
+        rType.add("NOR");
+        iType.add("SLL");
+        iType.add("SRL");
+        iType.add("BNE");
+        rType.add("SLT");
+        iType.add("JUMP");
+
+
+        immediateValue.add("0");
+        immediateValue.add("1");
+        immediateValue.add("2");
+        immediateValue.add("3");
 
 
     }
