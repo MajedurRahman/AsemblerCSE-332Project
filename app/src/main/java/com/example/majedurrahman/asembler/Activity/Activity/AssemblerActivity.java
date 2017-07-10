@@ -66,6 +66,7 @@ public class AssemblerActivity extends AppCompatActivity {
     }
 
 
+
     public void initComponent() {
 
         editor = (EditText) findViewById(R.id.editor);
@@ -207,6 +208,8 @@ public class AssemblerActivity extends AppCompatActivity {
 
             codeList.clear();
             this.code.delete(0, this.code.length());
+            this.assemblyIns.delete(0, this.assemblyIns.length());
+
             String code = editor.getText().toString().toUpperCase().trim().replaceAll(" +", " ");
             String codec[] = code.split(";");
 
@@ -214,17 +217,17 @@ public class AssemblerActivity extends AppCompatActivity {
 
                 codeList.add(codec[i].trim().toUpperCase());
                 checkInstructions(codeList.get(i).toString());
-                this.assemblyIns.append(codec[i].toUpperCase() +" " );
+                this.assemblyIns.append(codec[i].toUpperCase() + " ");
 
 
             }
 
 
-            Log.e("Machine Code : " , this.code.toString() );
+            Log.e("Machine Code : ", this.code.toString());
 
-            startActivity(new Intent(AssemblerActivity.this,ResultActivity.class)
-                    .putExtra("Code",this.code.toString())
-                    .putExtra("Assembly",this.assemblyIns.toString()));
+            startActivity(new Intent(AssemblerActivity.this, ResultActivity.class)
+                    .putExtra("Code", this.code.toString())
+                    .putExtra("Assembly", this.assemblyIns.toString()));
 
 
         }
@@ -282,9 +285,9 @@ public class AssemblerActivity extends AppCompatActivity {
 
     private void getMachineCode(String op, String rd, String rs, String rt) {
 
-        String code = getOpCodeValue(op.toUpperCase()) + getRegisterValue(rd) + getRegisterValue(rs)  + getRegisterValue(rt);
+        String code = getOpCodeValue(op.toUpperCase()) + getRegisterValue(rd) + getRegisterValue(rs) + getRegisterValue(rt);
 
-        this.code.append(code+"\n");
+        this.code.append(code + "\n");
     }
 
     public String getOpCodeValue(String rs) {
