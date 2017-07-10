@@ -29,7 +29,7 @@ public class AssemblerActivity extends AppCompatActivity {
     StringBuilder assembly = new StringBuilder();
 
 
-    ArrayList<String> operationNameList ,registerList;
+    ArrayList<String> operationNameList, registerList;
     ArrayList<String> operationCodeList, rType, iType, tType;
 
     ArrayList<Operation> operationArrayList;
@@ -224,34 +224,32 @@ public class AssemblerActivity extends AppCompatActivity {
             oparend.setRt(codePart[3]);
 
 
-            if (operationNameList.contains(oparend.getOp())){
+            if (operationNameList.contains(oparend.getOp())) {
 
-                if (registerList.contains(oparend.getRd().toUpperCase())&& !oparend.getRd().equalsIgnoreCase(zero.getText().toString())){
+                if (registerList.contains(oparend.getRd().toUpperCase()) && !oparend.getRd().equalsIgnoreCase(zero.getText().toString())) {
 
-                    if (registerList.contains(oparend.getRs())){
+                    if (registerList.contains(oparend.getRs())) {
 
-                        if (registerList.contains(oparend.getRt())){
+                        if (registerList.contains(oparend.getRt())) {
 
-                            Toast.makeText(this, " Your Statement is :: " + oparend.getOp() +" " + oparend.getRd()+
+                            Toast.makeText(this, " Your Statement is :: " + oparend.getOp() + " " + oparend.getRd() +
                                     " " + oparend.getRs() + " " + oparend.getRt(), Toast.LENGTH_SHORT).show();
-                        }
-                        else {
+                        } else {
                             Toast.makeText(this, "Incorrect Statement in RT", Toast.LENGTH_SHORT).show();
                         }
-                    }else {
+                    } else {
 
                         Toast.makeText(this, "Incorrect Statement in RS", Toast.LENGTH_SHORT).show();
                     }
 
 
-                }else{
+                } else {
 
                     Toast.makeText(this, "Incorrect Statement in RD !!", Toast.LENGTH_SHORT).show();
                 }
 
 
-            }
-            else {
+            } else {
 
                 Toast.makeText(this, "InCorrect Operation Name !!", Toast.LENGTH_SHORT).show();
             }
