@@ -15,9 +15,6 @@
         android:onClick="openAssemblerActivity"
         android:textColorHint="@color/colorPrimaryDark" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -55,7 +52,6 @@
 
         </LinearLayout>
 
-    </ScrollView>
 
 
 
