@@ -30,6 +30,7 @@ public class AssemblerActivity extends AppCompatActivity {
 
     StringBuilder assembly = new StringBuilder();
     StringBuilder code = new StringBuilder();
+    StringBuilder assemblyIns = new StringBuilder();
 
 
     ArrayList<String> operationNameList, registerList;
@@ -213,7 +214,7 @@ public class AssemblerActivity extends AppCompatActivity {
 
                 codeList.add(codec[i].trim().toUpperCase());
                 checkInstructions(codeList.get(i).toString());
-                Log.e("Assembly Code : " , codec[i].toUpperCase() );
+                this.assemblyIns.append(codec[i].toUpperCase() +" " );
 
 
             }
@@ -221,7 +222,9 @@ public class AssemblerActivity extends AppCompatActivity {
 
             Log.e("Machine Code : " , this.code.toString() );
 
-            startActivity(new Intent(AssemblerActivity.this,ResultActivity.class).putExtra("cod",this.code.toString()));
+            startActivity(new Intent(AssemblerActivity.this,ResultActivity.class)
+                    .putExtra("Code",this.code.toString())
+                    .putExtra("Assembly",this.assemblyIns.toString()));
 
 
         }
