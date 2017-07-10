@@ -3,23 +3,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-   android:orientation="vertical"
+    android:layout_margin="8dp"
+    android:orientation="vertical"
     tools:context="com.example.majedurrahman.asembler.Activity.Activity.ResultActivity">
 
     <TextView
-        android:layout_width="match_parent"
+
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/instTv"
-        android:text="sampl"
-        android:padding="20dp"
-        android:textSize="30dp"/>
+        android:layout_gravity="center"
+        android:text="Assembly Code"
+        android:textColor="@color/fbutton_color_green_sea"
+        android:textSize="20dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".5"
+        android:scrollbars="none">
+
+        <TextView
+            android:id="@+id/instTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:padding="20dp"
+            android:text="No Data Found"
+            android:textColor="@color/fbutton_color_pomegranate"
+            android:textSize="25dp" />
+    </ScrollView>
 
     <TextView
-        android:layout_width="match_parent"
+
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/resultTv"
-        android:text="sampl"
-        android:padding="20dp"
-        android:textSize="30dp"/>
+        android:layout_gravity="center"
+        android:text="Machine Code"
+        android:textColor="@color/fbutton_color_green_sea"
+        android:textSize="20dp" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".5"
+        android:scrollbars="none">
+
+        <TextView
+            android:id="@+id/resultTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No Data Found"
+            android:padding="20dp"
+            android:textColor="@color/fbutton_color_midnight_blue"
+            android:textSize="25dp" />
+    </ScrollView>
+
 
 </LinearLayout>

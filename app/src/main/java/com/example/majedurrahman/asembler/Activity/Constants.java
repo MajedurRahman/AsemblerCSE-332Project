@@ -30,7 +30,7 @@ public class Constants {
     public static String SUBname = "SUB";
     public static String LWname = "LW";
     public static String SWname = "SW";
-    public static String ADDiname = "ADDi";
+    public static String ADDiname = "ADDI";
     public static String ANDname = "AND";
     public static String ORname = "OR";
     public static String NORname = "NOR";

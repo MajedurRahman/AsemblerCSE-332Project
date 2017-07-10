@@ -63,6 +63,11 @@ public class AssemblerActivity extends AppCompatActivity {
         initComponent();
         loadData();
 
+
+        for (int i=0 ; i<operationArrayList.size() ; i++){
+            Log.e("Oparations " , operationArrayList.get(i).getOpName() + " " + operationArrayList.get(i).getOpType());
+        }
+
     }
 
 
@@ -217,13 +222,11 @@ public class AssemblerActivity extends AppCompatActivity {
 
                 codeList.add(codec[i].trim().toUpperCase());
                 checkInstructions(codeList.get(i).toString());
-                this.assemblyIns.append(codec[i].toUpperCase() + " ");
+
+                this.assemblyIns.append(codec[i].toUpperCase() + "\n");
 
 
             }
-
-
-            Log.e("Machine Code : ", this.code.toString());
 
             startActivity(new Intent(AssemblerActivity.this, ResultActivity.class)
                     .putExtra("Code", this.code.toString())
@@ -246,7 +249,7 @@ public class AssemblerActivity extends AppCompatActivity {
             oparend.setRt(codePart[3]);
 
 
-            if (operationNameList.contains(oparend.getOp())) {
+            if (operationNameList.contains(oparend.getOp().toUpperCase())) {
 
                 if (registerList.contains(oparend.getRd().toUpperCase()) && !oparend.getRd().equalsIgnoreCase(zero.getText().toString())) {
 
@@ -304,11 +307,11 @@ public class AssemblerActivity extends AppCompatActivity {
         return null;
     }
 
-    public String getRegisterValue(String rs) {
+    public String getRegisterValue(String value) {
 
 
         for (int i = 0; i < registerArrayList.size(); i++) {
-            if (registerArrayList.get(i).getName().equalsIgnoreCase(rs)) {
+            if (registerArrayList.get(i).getName().equalsIgnoreCase(value)) {
                 return registerArrayList.get(i).getValue();
             }
         }

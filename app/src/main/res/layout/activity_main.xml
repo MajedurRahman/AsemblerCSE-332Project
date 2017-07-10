@@ -6,15 +6,13 @@
     tools:context="com.example.majedurrahman.asembler.Activity.Activity.MainActivity">
 
     <Button
+        android:id="@+id/assemblerActivityButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="8dp"
         android:hint="Open Assembler"
         android:onClick="openAssemblerActivity"
-        android:id="@+id/assemblerActivityButton"
-
-
         android:textColorHint="@color/colorPrimaryDark" />
 
     <ScrollView
@@ -41,17 +39,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ttype" />
+
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="40dp"
-                android:background="@drawable/registertable"/>
+                android:background="@drawable/registertable" />
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:scaleType="fitCenter"
+                android:layout_marginBottom="50dp"
                 android:background="@drawable/operationtablee"
-                android:layout_marginBottom="50dp"/>
+                android:scaleType="fitCenter" />
 
         </LinearLayout>
 
