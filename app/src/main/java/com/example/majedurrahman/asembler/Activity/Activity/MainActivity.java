@@ -19,7 +19,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
         Button button = (Button) findViewById(R.id.assemblerActivityButton);
 
 
@@ -32,8 +31,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
-
 
 
 }

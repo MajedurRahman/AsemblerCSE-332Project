@@ -1,6 +1,5 @@
 package com.example.majedurrahman.asembler.Activity.Activity;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
@@ -34,19 +33,20 @@ public class ResultActivity extends AppCompatActivity {
         textView1.setText(instraction.toString());
         textView2.setText(Code.toString());
 
-        writeIntoFile(Code , instraction);
+        writeIntoFile(Code, instraction);
 
 
     }
 
-    private void writeIntoFile(String code , String instruction) {
+    // Write Instruction and Machine code if file
+    private void writeIntoFile(String code, String instruction) {
         long nameExtendedKey = SystemClock.elapsedRealtime();
         FileWriter fileWriter = new FileWriter(ResultActivity.this);
 
         try {
             File subDirectory = fileWriter.createSubDirectory(fileWriter.getExternalStorageDirectory(), "Assembler Folder");
-            fileWriter.writeDataToFile(subDirectory, nameExtendedKey+"_Code.txt", code.toString());
-            fileWriter.writeDataToFile(subDirectory, nameExtendedKey+"_Instructions.txt", instruction.toString());
+            fileWriter.writeDataToFile(subDirectory, nameExtendedKey + "_Code.txt", code.toString());
+            fileWriter.writeDataToFile(subDirectory, nameExtendedKey + "_Instructions.txt", instruction.toString());
         } catch (FileWriter.ExternalFileWriterException e) {
             e.printStackTrace();
         }

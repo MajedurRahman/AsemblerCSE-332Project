@@ -306,19 +306,16 @@ public class AssemblerActivity extends AppCompatActivity {
                                 if (oparend.getRt().equalsIgnoreCase("0")) {
                                     getMachineCode(oparend.getOp(), oparend.getRd(), oparend.getRs(), "00", "I");
 
-                                } else if (oparend.getRt().equalsIgnoreCase("1")){
+                                } else if (oparend.getRt().equalsIgnoreCase("1")) {
                                     getMachineCode(oparend.getOp(), oparend.getRd(), oparend.getRs(), "01", "I");
 
-                                }
-                                else if (oparend.getRt().equalsIgnoreCase("2")) {
+                                } else if (oparend.getRt().equalsIgnoreCase("2")) {
                                     getMachineCode(oparend.getOp(), oparend.getRd(), oparend.getRs(), "10", "I");
 
-                                }
-                                else if (oparend.getRt().equalsIgnoreCase("3")){
+                                } else if (oparend.getRt().equalsIgnoreCase("3")) {
                                     getMachineCode(oparend.getOp(), oparend.getRd(), oparend.getRs(), "11", "I");
 
                                 }
-
 
 
                             } else {
