@@ -1,4 +1,4 @@
-package com.example.majedurrahman.asembler.Activity;
+package com.example.majedurrahman.asembler.Activity.Model;
 
 /**
  * Created by Majedur Rahman on 7/9/2017.
@@ -16,7 +16,7 @@ public class Operation {
     }
 
     public String getOpName() {
-        return opName;
+        return opName.toUpperCase();
     }
 
     public void setOpName(String opName) {
@@ -24,7 +24,7 @@ public class Operation {
     }
 
     public String getOpCode() {
-        return opCode;
+        return opCode.toUpperCase();
     }
 
     public void setOpCode(String opCode) {
@@ -32,7 +32,7 @@ public class Operation {
     }
 
     public String getOpType() {
-        return opType;
+        return opType.toUpperCase();
     }
 
     public void setOpType(String opType) {

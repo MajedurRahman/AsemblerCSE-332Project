@@ -1,5 +1,6 @@
 package com.example.majedurrahman.asembler.Activity.Activity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,8 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.majedurrahman.asembler.Activity.Constants;
+import com.example.majedurrahman.asembler.Activity.Model.Operation;
+import com.example.majedurrahman.asembler.Activity.Model.Register;
 import com.example.majedurrahman.asembler.Activity.Oparends;
-import com.example.majedurrahman.asembler.Activity.Operation;
 import com.example.majedurrahman.asembler.R;
 
 import java.util.ArrayList;
@@ -27,13 +29,16 @@ public class AssemblerActivity extends AppCompatActivity {
     TextView message;
 
     StringBuilder assembly = new StringBuilder();
+    StringBuilder code = new StringBuilder();
 
 
     ArrayList<String> operationNameList, registerList;
     ArrayList<String> operationCodeList, rType, iType, tType;
 
     ArrayList<Operation> operationArrayList;
+    ArrayList<Register> registerArrayList;
 
+    ArrayList<String> codeList;
 
     Button add, sub, lw, sw, addi, and, or, nor, sll, srl, bne, slt, jump, coma, semiclone, solveBtn, space, zero, s0, s1, t1;
 
@@ -43,20 +48,20 @@ public class AssemblerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.assembler_layout);
 
-
+        codeList = new ArrayList<>();
         operationNameList = new ArrayList<>();
         operationCodeList = new ArrayList<>();
         operationArrayList = new ArrayList<>();
         registerList = new ArrayList<>();
+        registerArrayList = new ArrayList<>();
 
         rType = new ArrayList<>();
         tType = new ArrayList<>();
         iType = new ArrayList<>();
 
-        loadData();
         initComponent();
+        loadData();
 
-//
     }
 
 
@@ -199,12 +204,24 @@ public class AssemblerActivity extends AppCompatActivity {
             assembly.delete(0, assembly.length());
         } else if (view.getId() == solveBtn.getId()) {
 
-
-            //Solve every thing
-
+            codeList.clear();
+            this.code.delete(0, this.code.length());
             String code = editor.getText().toString().toUpperCase().trim().replaceAll(" +", " ");
+            String codec[] = code.split(";");
 
-            checkInstructions(code);
+            for (int i = 0; i < codec.length; i++) {
+
+                codeList.add(codec[i].trim().toUpperCase());
+                checkInstructions(codeList.get(i).toString());
+                Log.e("Assembly Code : " , codec[i].toUpperCase() );
+
+
+            }
+
+
+            Log.e("Machine Code : " , this.code.toString() );
+
+            startActivity(new Intent(AssemblerActivity.this,ResultActivity.class).putExtra("cod",this.code.toString()));
 
 
         }
@@ -216,7 +233,6 @@ public class AssemblerActivity extends AppCompatActivity {
 
         String codePart[] = code.split(" ");
         if (codePart.length == 4) {
-            Operation operation = new Operation();
             Oparends oparend = new Oparends();
             oparend.setOp(codePart[0]);
             oparend.setRd(codePart[1]);
@@ -232,8 +248,8 @@ public class AssemblerActivity extends AppCompatActivity {
 
                         if (registerList.contains(oparend.getRt())) {
 
-                            Toast.makeText(this, " Your Statement is :: " + oparend.getOp() + " " + oparend.getRd() +
-                                    " " + oparend.getRs() + " " + oparend.getRt(), Toast.LENGTH_SHORT).show();
+                            getMachineCode(oparend.getOp(), oparend.getRd(), oparend.getRs(), oparend.getRt());
+
                         } else {
                             Toast.makeText(this, "Incorrect Statement in RT", Toast.LENGTH_SHORT).show();
                         }
@@ -261,6 +277,38 @@ public class AssemblerActivity extends AppCompatActivity {
         }
     }
 
+    private void getMachineCode(String op, String rd, String rs, String rt) {
+
+        String code = getOpCodeValue(op.toUpperCase()) + getRegisterValue(rd) + getRegisterValue(rs)  + getRegisterValue(rt);
+
+        this.code.append(code+"\n");
+    }
+
+    public String getOpCodeValue(String rs) {
+
+        for (int i = 0; i < operationArrayList.size(); i++) {
+
+            if (operationArrayList.get(i).getOpName().equalsIgnoreCase(rs)) {
+
+
+                return operationArrayList.get(i).getOpCode();
+            }
+        }
+
+        return null;
+    }
+
+    public String getRegisterValue(String rs) {
+
+
+        for (int i = 0; i < registerArrayList.size(); i++) {
+            if (registerArrayList.get(i).getName().equalsIgnoreCase(rs)) {
+                return registerArrayList.get(i).getValue();
+            }
+        }
+        return null;
+    }
+
 
     public void loadData() {
 
@@ -271,12 +319,14 @@ public class AssemblerActivity extends AppCompatActivity {
                 addOperationNameToList();
                 addOperationCodeToList();
                 loadRegister();
+                loadRegisterData();
                 setOperationList();
 
             }
         });
 
     }
+
 
     private void loadRegister() {
 
@@ -286,6 +336,19 @@ public class AssemblerActivity extends AppCompatActivity {
         registerList.add(t1.getText().toString().toUpperCase());
     }
 
+    private void loadRegisterData() {
+
+        Register register = new Register(zero.getText().toString().toUpperCase(), "00");
+        registerArrayList.add(register);
+        register = new Register(s0.getText().toString().toUpperCase(), "01");
+        registerArrayList.add(register);
+        register = new Register(s1.getText().toString().toUpperCase(), "10");
+        registerArrayList.add(register);
+        register = new Register(t1.getText().toString().toUpperCase(), "11");
+        registerArrayList.add(register);
+
+
+    }
 
     private void setOperationList() {
 
