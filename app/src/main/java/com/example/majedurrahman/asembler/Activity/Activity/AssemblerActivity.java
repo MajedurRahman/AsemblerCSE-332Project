@@ -216,7 +216,7 @@ public class AssemblerActivity extends AppCompatActivity {
             this.code.delete(0, this.code.length());
             this.assemblyIns.delete(0, this.assemblyIns.length());
 
-            String code = editor.getText().toString().toUpperCase().trim().replaceAll(" +", " ");
+            String code = editor.getText().toString().toUpperCase().trim().replaceAll(" +", " ").replaceAll("\n","");
             String codec[] = code.split(";");
 
             for (int i = 0; i < codec.length; i++) {
@@ -266,22 +266,31 @@ public class AssemblerActivity extends AppCompatActivity {
 
                             } else {
                                 Toast.makeText(this, "Incorrect Statement in RT", Toast.LENGTH_SHORT).show();
+                                this.code.append("Incorrect Statement in RT !!" + "\n");
+
                             }
                         } else {
 
                             Toast.makeText(this, "Incorrect Statement in RS", Toast.LENGTH_SHORT).show();
+                            this.code.append("Incorrect Statement in RS !!" + "\n");
+
+
                         }
 
 
                     } else {
 
                         Toast.makeText(this, "Incorrect Statement in RD !!", Toast.LENGTH_SHORT).show();
+                        this.code.append("Incorrect Statement in RD !!" + "\n");
                     }
 
 
                 } else {
 
+
                     Toast.makeText(this, "InCorrect Operation Name !!", Toast.LENGTH_SHORT).show();
+                    this.code.append("Incorrect Statement in Name !!" + "\n");
+
                 }
 
             } else if (iType.contains(codePart[0].toUpperCase())) {
@@ -320,22 +329,28 @@ public class AssemblerActivity extends AppCompatActivity {
 
                             } else {
                                 Toast.makeText(this, "Incorrect Statement in Immediate Value !!", Toast.LENGTH_SHORT).show();
+                                this.code.append("Incorrect Statement in Immediate Value !!" + "\n");
+
                             }
                         } else {
 
                             Toast.makeText(this, "Incorrect Statement in RS !!", Toast.LENGTH_SHORT).show();
+                            this.code.append("Incorrect Statement RS !!" + "\n");
+
                         }
 
 
                     } else {
 
                         Toast.makeText(this, "Incorrect Statement in RD !!", Toast.LENGTH_SHORT).show();
+                        this.code.append("Incorrect Statement RD !!" + "\n");
                     }
 
 
                 } else {
 
                     Toast.makeText(this, "InCorrect Operation Name !!", Toast.LENGTH_SHORT).show();
+                    this.code.append("InCorrect Operation Name !!!!" + "\n");
                 }
 
             }
@@ -344,6 +359,8 @@ public class AssemblerActivity extends AppCompatActivity {
         } else {
 
             Toast.makeText(this, "InComplete Statement !! ", Toast.LENGTH_SHORT).show();
+            this.code.append("InComplete Statement!!!!" + "\n");
+
         }
     }
 
