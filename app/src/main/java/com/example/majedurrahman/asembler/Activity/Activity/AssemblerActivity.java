@@ -217,6 +217,8 @@ public class AssemblerActivity extends AppCompatActivity {
             codeList.clear();
             this.code.delete(0, this.code.length());
             this.assemblyIns.delete(0, this.assemblyIns.length());
+            this.hexCode.delete(0, this.hexCode.length());
+
 
             String code = editor.getText().toString().toUpperCase().trim().replaceAll(" +", " ").replaceAll("\n", "");
 
@@ -235,6 +237,7 @@ public class AssemblerActivity extends AppCompatActivity {
 
             startActivity(new Intent(AssemblerActivity.this, ResultActivity.class)
                     .putExtra("Code", this.code.toString())
+                    .putExtra("Hex",this.hexCode.toString())
                     .putExtra("Assembly", this.assemblyIns.toString()));
 
 
@@ -265,18 +268,21 @@ public class AssemblerActivity extends AppCompatActivity {
                             getMachineCode(OpCode, RD, RS, RT, "R");
                         } else {
                             // Toast.makeText(this, " Error Occurred in RT ", Toast.LENGTH_SHORT).show();
-                            this.code.append("  Error Occurred in RT " + "\n");
+                            this.code.append("Error Occurred in RT " + "\n");
+                            this.hexCode.append("Error"+"\n");
 
                         }
 
                     } else {
                         //  Toast.makeText(this, " Error Occurred in RS ", Toast.LENGTH_SHORT).show();
-                        this.code.append("  Error Occurred in RS " + "\n");
+                        this.code.append("Error Occurred in RS " + "\n");
+                        this.hexCode.append("Error"+"\n");
                     }
 
                 } else {
                     //  Toast.makeText(this, " Error Occurred in RD ", Toast.LENGTH_SHORT).show();
-                    this.code.append("  Error Occurred in RD " + "\n");
+                    this.code.append("Error Occurred in RD " + "\n");
+                    this.hexCode.append("Error"+"\n");
                 }
 
             }
@@ -297,14 +303,14 @@ public class AssemblerActivity extends AppCompatActivity {
 
 
                     } else {
-                        Toast.makeText(this, " Error Occurred in RD ", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Error Occurred in RD ", Toast.LENGTH_SHORT).show();
                     }
                 }
 
 
             } else {
                 //Toast.makeText(this, " Invalid Operation Name  ", Toast.LENGTH_SHORT).show();
-                this.code.append("  Invalid Operation Name  " + "\n");
+                this.code.append("Invalid Operation Name  " + "\n");
             }
 
 
@@ -315,35 +321,18 @@ public class AssemblerActivity extends AppCompatActivity {
 
 
 
-
-
-
              */
         else {
 
-            Toast.makeText(this, " Incorrect Statement !!! ", Toast.LENGTH_SHORT).show();
-            this.code.append("  Incorrect Statement  " + "\n");
+            Toast.makeText(this, "Incorrect Statement !!! ", Toast.LENGTH_SHORT).show();
+            this.code.append("Incorrect Statement  " + "\n");
+            this.hexCode.append("Error"+"\n");
         }
 
 
     }
 
-    /*void binaryToHEX(String binary) {
-
-        String[] bit = binary.trim().split("");
-        BigInteger bigInteger =new BigInteger(binary,10);
-        String hex1 = bit[1]+bit[2]+bit[3]+bit[4];
-        String hex2 = bit[5]+bit[6]+bit[7]+ bit[8];
-        String  hex3 = bit[9]+bit[10];
-        String HEX = Integer.toHexString(Integer.valueOf(hex1)) +" "+ Integer.toHexString(Integer.valueOf(hex2))  +" "+Integer.toHexString(Integer.valueOf(hex3));
-        Log.d("bIG" , bigInteger.toString());
-        //    Toast.makeText(this, bit[1] + bit[2] + bit[3] + bit[4] + " " + bit[5] + bit[6] + " " + bit[7] + bit[8] + " " + bit[9] + bit[10] + "  Size : " + bit.length, Toast.LENGTH_SHORT).show();
-        Log.e(" HEX" , HEX);
-        bitsToHexConversion(binary.trim());
-    }*/
-
     private void bitsToHexConversion(String bitStream){
-
         int byteLength = 4;
         int bitStartPos = 0, bitPos = 0;
         String hexString = "";
@@ -377,9 +366,7 @@ public class AssemblerActivity extends AppCompatActivity {
             sum = 0;
         }
        // System.out.println("Hex String > "+ hexString);
-        Toast.makeText(this, hexString, Toast.LENGTH_SHORT).show();
-
-        hexCode.append(hexString+"\n");
+        this.hexCode.append(hexString+"\n");
     }
 
 
@@ -514,9 +501,6 @@ public class AssemblerActivity extends AppCompatActivity {
         operationCodeList.add(Constants.JUMPcode);
 
 
-        Log.e("Load :: ", "Load All Operation Code : Size :: " + operationCodeList.size());
-
-
         rType.add("ADD");
         rType.add("SUB");
         iType.add("LW");
@@ -557,7 +541,6 @@ public class AssemblerActivity extends AppCompatActivity {
         operationNameList.add(Constants.SLTname);
         operationNameList.add(Constants.JUMPname);
 
-        Log.e("Load : ", "Load All Operation Name : Size :: " + operationNameList.size());
 
 
     }
