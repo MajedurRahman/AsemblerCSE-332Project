@@ -1,6 +1,7 @@
 package com.example.majedurrahman.asembler.Activity.Activity;
 
 import android.content.Intent;
+import android.graphics.Path;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,9 +17,7 @@ import com.example.majedurrahman.asembler.Activity.Model.Operation;
 import com.example.majedurrahman.asembler.Activity.Model.Register;
 import com.example.majedurrahman.asembler.R;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Locale;
 
 /**
  * Created by Majedur Rahman on 7/9/2017.
@@ -237,7 +236,7 @@ public class AssemblerActivity extends AppCompatActivity {
 
             startActivity(new Intent(AssemblerActivity.this, ResultActivity.class)
                     .putExtra("Code", this.code.toString())
-                    .putExtra("Hex",this.hexCode.toString())
+                    .putExtra("Hex", this.hexCode.toString())
                     .putExtra("Assembly", this.assemblyIns.toString()));
 
 
@@ -269,50 +268,115 @@ public class AssemblerActivity extends AppCompatActivity {
                         } else {
                             // Toast.makeText(this, " Error Occurred in RT ", Toast.LENGTH_SHORT).show();
                             this.code.append("Error Occurred in RT " + "\n");
-                            this.hexCode.append("Error"+"\n");
+                            this.hexCode.append("Error" + "\n");
 
                         }
 
                     } else {
                         //  Toast.makeText(this, " Error Occurred in RS ", Toast.LENGTH_SHORT).show();
                         this.code.append("Error Occurred in RS " + "\n");
-                        this.hexCode.append("Error"+"\n");
+                        this.hexCode.append("Error" + "\n");
                     }
 
                 } else {
                     //  Toast.makeText(this, " Error Occurred in RD ", Toast.LENGTH_SHORT).show();
                     this.code.append("Error Occurred in RD " + "\n");
-                    this.hexCode.append("Error"+"\n");
+                    this.hexCode.append("Error" + "\n");
                 }
 
-            }
-            /*
+            } else if (iType.contains(OpCode) &&
+                    !OpCode.equalsIgnoreCase("JUMP")
+                    && !OpCode.equalsIgnoreCase("LW")
+                    && !OpCode.equalsIgnoreCase("SW")) {
 
 
-             */
+                if (registerList.contains(RD) && !RD.equalsIgnoreCase("$ZERO")) {
 
-            else if (iType.contains(OpCode)) {
-
-                if (OpCode.equalsIgnoreCase("JUMP")) {
+                    if (registerList.contains(RS)) {
 
 
-                } else if (OpCode.equalsIgnoreCase("LW")) {
+                        String immediate = RT;
 
-                } else {
-                    if (registerList.contains(RD) && !RD.equalsIgnoreCase("$ZERO")) {
+                        if (immediate.equalsIgnoreCase("0")) {
 
+                            getMachineCode(OpCode, RD, RS, "00", "I");
+                        }
+                        else if (immediate.equalsIgnoreCase("1")){
+                            getMachineCode(OpCode, RD, RS, "01", "I");
+
+                        }
+                        else if (immediate.equalsIgnoreCase("2")){
+                            getMachineCode(OpCode, RD, RS, "10", "I");
+
+                        }
+                        else if (immediate.equalsIgnoreCase("3")){
+                            getMachineCode(OpCode, RD, RS, "11", "I");
+
+                        }
+                        else {
+
+                            this.code.append("Error in Immediate values" + "\n");
+                            this.hexCode.append("Error" + "\n");
+                        }
 
                     } else {
-                        Toast.makeText(this, "Error Occurred in RD ", Toast.LENGTH_SHORT).show();
+                        this.code.append("Error Occurred in RS" + "\n");
+                        this.hexCode.append("Error" + "\n");
                     }
+
+                } else {
+                    this.code.append("Error Occurred in RD" + "\n");
+                    this.hexCode.append("Error" + "\n");
+                }
+
+
+            }
+
+            else if (iType.contains(OpCode)
+                    &&( OpCode.equalsIgnoreCase("LW")
+                    || OpCode.equalsIgnoreCase("SW"))
+                    && !OpCode.equalsIgnoreCase("JUMP")){
+
+                this.code.append("Not set yet" + "\n");
+                this.hexCode.append("_____" + "\n");
+
+            }
+
+
+            else {
+                //Toast.makeText(this, " Invalid Operation Name  ", Toast.LENGTH_SHORT).show();
+                this.code.append("Invalid Operation Name  " + "\n");
+                this.hexCode.append("Error" + "\n");
+            }
+
+
+        } else if (codePart.length == 2) {
+
+            String OpCode = codePart[0].trim().replaceAll("\n", "").toUpperCase();
+            String jumplength = codePart[1].trim().replaceAll("\n", "").toUpperCase();
+
+            if (OpCode.equalsIgnoreCase("JUMP")) {
+
+                if (jumplength.equalsIgnoreCase("3")
+                        || jumplength.equalsIgnoreCase("2")
+                        || jumplength.equalsIgnoreCase("1")
+                        || jumplength.equalsIgnoreCase("0")) {
+
+
+                    getMachineCode(OpCode,jumplength,"00","00","JUMP");
+                }
+                else {
+
+                    this.code.append("Error in Immediate values" + "\n");
+                    this.hexCode.append("Error" + "\n");
                 }
 
 
             } else {
-                //Toast.makeText(this, " Invalid Operation Name  ", Toast.LENGTH_SHORT).show();
-                this.code.append("Invalid Operation Name  " + "\n");
-            }
+                this.code.append("Invalid Operation Name" + "\n");
+                this.hexCode.append("Error" + "\n");
 
+            }
 
         }
 
@@ -326,13 +390,13 @@ public class AssemblerActivity extends AppCompatActivity {
 
             Toast.makeText(this, "Incorrect Statement !!! ", Toast.LENGTH_SHORT).show();
             this.code.append("Incorrect Statement  " + "\n");
-            this.hexCode.append("Error"+"\n");
+            this.hexCode.append("Error" + "\n");
         }
 
 
     }
 
-    private void bitsToHexConversion(String bitStream){
+    private void bitsToHexConversion(String bitStream) {
         int byteLength = 4;
         int bitStartPos = 0, bitPos = 0;
         String hexString = "";
@@ -340,24 +404,22 @@ public class AssemblerActivity extends AppCompatActivity {
 
         // pad '0' to make input bit stream multiple of 4
 
-        if(bitStream.length()%4 !=0){
+        if (bitStream.length() % 4 != 0) {
             int tempCnt = 0;
             int tempBit = bitStream.length() % 4;
-            while(tempCnt < (byteLength - tempBit)){
+            while (tempCnt < (byteLength - tempBit)) {
                 bitStream = "0" + bitStream;
                 tempCnt++;
             }
         }
 
-        // Group 4 bits, and find Hex equivalent
-
-        while(bitStartPos < bitStream.length()){
-            while(bitPos < byteLength){
-                sum = (int) (sum + Integer.parseInt("" + bitStream.charAt(bitStream.length()- bitStartPos -1)) * Math.pow(2, bitPos)) ;
+        while (bitStartPos < bitStream.length()) {
+            while (bitPos < byteLength) {
+                sum = (int) (sum + Integer.parseInt("" + bitStream.charAt(bitStream.length() - bitStartPos - 1)) * Math.pow(2, bitPos));
                 bitPos++;
                 bitStartPos++;
             }
-            if(sum < 10)
+            if (sum < 10)
                 hexString = Integer.toString(sum) + hexString;
             else
                 hexString = (char) (sum + 55) + hexString;
@@ -365,12 +427,9 @@ public class AssemblerActivity extends AppCompatActivity {
             bitPos = 0;
             sum = 0;
         }
-       // System.out.println("Hex String > "+ hexString);
-        this.hexCode.append(hexString+"\n");
+        // System.out.println("Hex String > "+ hexString);
+        this.hexCode.append(hexString + "\n");
     }
-
-
-
 
 
     private void getMachineCode(String op, String rd, String rs, String rt, String type) {
@@ -382,6 +441,11 @@ public class AssemblerActivity extends AppCompatActivity {
         } else if (type.equalsIgnoreCase("I")) {
             code = getOpCodeValue(op.toUpperCase()) + getRegisterValue(rd) + getRegisterValue(rs) + rt;
 
+        }
+
+        else if (type.equalsIgnoreCase("JUMP")){
+
+            code = getOpCodeValue(op.toUpperCase()) +"00"+"00"+rd;
         }
         bitsToHexConversion(code);
         this.code.append(code + "\n");
@@ -540,7 +604,6 @@ public class AssemblerActivity extends AppCompatActivity {
         operationNameList.add(Constants.BNEname);
         operationNameList.add(Constants.SLTname);
         operationNameList.add(Constants.JUMPname);
-
 
 
     }
