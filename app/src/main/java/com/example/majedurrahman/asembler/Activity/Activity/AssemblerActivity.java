@@ -16,7 +16,9 @@ import com.example.majedurrahman.asembler.Activity.Model.Operation;
 import com.example.majedurrahman.asembler.Activity.Model.Register;
 import com.example.majedurrahman.asembler.R;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by Majedur Rahman on 7/9/2017.
@@ -28,6 +30,7 @@ public class AssemblerActivity extends AppCompatActivity {
     TextView message;
 
     StringBuilder assembly = new StringBuilder();
+    StringBuilder hexCode = new StringBuilder();
     StringBuilder code = new StringBuilder();
     StringBuilder assemblyIns = new StringBuilder();
 
@@ -325,20 +328,62 @@ public class AssemblerActivity extends AppCompatActivity {
 
     }
 
-    void binaryToHEX(String binary) {
+    /*void binaryToHEX(String binary) {
 
         String[] bit = binary.trim().split("");
-
+        BigInteger bigInteger =new BigInteger(binary,10);
         String hex1 = bit[1]+bit[2]+bit[3]+bit[4];
         String hex2 = bit[5]+bit[6]+bit[7]+ bit[8];
         String  hex3 = bit[9]+bit[10];
-        Log.e("HEx" ,Integer.toHexString(Integer.valueOf(binary)));
         String HEX = Integer.toHexString(Integer.valueOf(hex1)) +" "+ Integer.toHexString(Integer.valueOf(hex2))  +" "+Integer.toHexString(Integer.valueOf(hex3));
-
-
+        Log.d("bIG" , bigInteger.toString());
         //    Toast.makeText(this, bit[1] + bit[2] + bit[3] + bit[4] + " " + bit[5] + bit[6] + " " + bit[7] + bit[8] + " " + bit[9] + bit[10] + "  Size : " + bit.length, Toast.LENGTH_SHORT).show();
         Log.e(" HEX" , HEX);
+        bitsToHexConversion(binary.trim());
+    }*/
+
+    private void bitsToHexConversion(String bitStream){
+
+        int byteLength = 4;
+        int bitStartPos = 0, bitPos = 0;
+        String hexString = "";
+        int sum = 0;
+
+        // pad '0' to make input bit stream multiple of 4
+
+        if(bitStream.length()%4 !=0){
+            int tempCnt = 0;
+            int tempBit = bitStream.length() % 4;
+            while(tempCnt < (byteLength - tempBit)){
+                bitStream = "0" + bitStream;
+                tempCnt++;
+            }
+        }
+
+        // Group 4 bits, and find Hex equivalent
+
+        while(bitStartPos < bitStream.length()){
+            while(bitPos < byteLength){
+                sum = (int) (sum + Integer.parseInt("" + bitStream.charAt(bitStream.length()- bitStartPos -1)) * Math.pow(2, bitPos)) ;
+                bitPos++;
+                bitStartPos++;
+            }
+            if(sum < 10)
+                hexString = Integer.toString(sum) + hexString;
+            else
+                hexString = (char) (sum + 55) + hexString;
+
+            bitPos = 0;
+            sum = 0;
+        }
+       // System.out.println("Hex String > "+ hexString);
+        Toast.makeText(this, hexString, Toast.LENGTH_SHORT).show();
+
+        hexCode.append(hexString+"\n");
     }
+
+
+
 
 
     private void getMachineCode(String op, String rd, String rs, String rt, String type) {
@@ -351,9 +396,9 @@ public class AssemblerActivity extends AppCompatActivity {
             code = getOpCodeValue(op.toUpperCase()) + getRegisterValue(rd) + getRegisterValue(rs) + rt;
 
         }
-
+        bitsToHexConversion(code);
         this.code.append(code + "\n");
-        binaryToHEX(code);
+
     }
 
     public String getOpCodeValue(String rs) {
