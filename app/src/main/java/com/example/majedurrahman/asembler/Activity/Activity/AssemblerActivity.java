@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.example.majedurrahman.asembler.Activity.Constants;
 import com.example.majedurrahman.asembler.Activity.Model.Operation;
 import com.example.majedurrahman.asembler.Activity.Model.Register;
-import com.example.majedurrahman.asembler.Activity.Oparends;
 import com.example.majedurrahman.asembler.R;
 
 import java.util.ArrayList;
@@ -216,7 +215,9 @@ public class AssemblerActivity extends AppCompatActivity {
             this.code.delete(0, this.code.length());
             this.assemblyIns.delete(0, this.assemblyIns.length());
 
-            String code = editor.getText().toString().toUpperCase().trim().replaceAll(" +", " ").replaceAll("\n","");
+            String code = editor.getText().toString().toUpperCase().trim().replaceAll(" +", " ").replaceAll("\n", "");
+
+
             String codec[] = code.split(";");
 
             for (int i = 0; i < codec.length; i++) {
@@ -244,128 +245,105 @@ public class AssemblerActivity extends AppCompatActivity {
         String codePart[] = code.split(" ");
         if (codePart.length == 4) {
 
+            String OpCode = codePart[0].trim().replaceAll("\n", "").toUpperCase();
+            String RD = codePart[1].trim().replaceAll("\n", "").toUpperCase();
+            String RS = codePart[2].trim().replaceAll("\n", "").toUpperCase();
+            String RT = codePart[3].trim().replaceAll("\n", "").toUpperCase();
 
-            if (rType.contains(codePart[0].toUpperCase())) {
 
-                Log.e(" Type ", "R type ");
-                Oparends oparend = new Oparends();
-                oparend.setOp(codePart[0].toUpperCase());
-                oparend.setRd(codePart[1].toUpperCase());
-                oparend.setRs(codePart[2].toUpperCase());
-                oparend.setRt(codePart[3].toUpperCase());
+            if (rType.contains(OpCode)) {
 
-                if (operationNameList.contains(oparend.getOp().toUpperCase())) {
+                if (registerList.contains(RD) && !RD.equalsIgnoreCase("$ZERO")) {
 
-                    if (registerList.contains(oparend.getRd().toUpperCase()) && !oparend.getRd().equalsIgnoreCase(zero.getText().toString())) {
+                    if (registerList.contains(RS)) {
 
-                        if (registerList.contains(oparend.getRs())) {
+                        if (registerList.contains(RT)) {
 
-                            if (registerList.contains(oparend.getRt())) {
-
-                                getMachineCode(oparend.getOp(), oparend.getRd(), oparend.getRs(), oparend.getRt(), "R");
-
-                            } else {
-                                Toast.makeText(this, "Incorrect Statement in RT", Toast.LENGTH_SHORT).show();
-                                this.code.append("Incorrect Statement in RT !!" + "\n");
-
-                            }
+                            getMachineCode(OpCode, RD, RS, RT, "R");
                         } else {
-
-                            Toast.makeText(this, "Incorrect Statement in RS", Toast.LENGTH_SHORT).show();
-                            this.code.append("Incorrect Statement in RS !!" + "\n");
-
+                            // Toast.makeText(this, " Error Occurred in RT ", Toast.LENGTH_SHORT).show();
+                            this.code.append("  Error Occurred in RT " + "\n");
 
                         }
 
-
                     } else {
-
-                        Toast.makeText(this, "Incorrect Statement in RD !!", Toast.LENGTH_SHORT).show();
-                        this.code.append("Incorrect Statement in RD !!" + "\n");
+                        //  Toast.makeText(this, " Error Occurred in RS ", Toast.LENGTH_SHORT).show();
+                        this.code.append("  Error Occurred in RS " + "\n");
                     }
 
-
                 } else {
-
-
-                    Toast.makeText(this, "InCorrect Operation Name !!", Toast.LENGTH_SHORT).show();
-                    this.code.append("Incorrect Statement in Name !!" + "\n");
-
-                }
-
-            } else if (iType.contains(codePart[0].toUpperCase())) {
-
-                Log.e(" Type ", "I type ");
-
-                Oparends oparend = new Oparends();
-                oparend.setOp(codePart[0].toUpperCase());
-                oparend.setRd(codePart[1].toUpperCase());
-                oparend.setRs(codePart[2].toUpperCase());
-                //Here RT  used as Immediate because both of them are same bit
-                oparend.setRt(codePart[3].toUpperCase());
-
-                if (operationNameList.contains(oparend.getOp().toUpperCase())) {
-
-                    if (registerList.contains(oparend.getRd().toUpperCase()) && !oparend.getRd().equalsIgnoreCase(zero.getText().toString())) {
-
-                        if (registerList.contains(oparend.getRs())) {
-
-                            if (immediateValue.contains(oparend.getRt())) {
-
-                                if (oparend.getRt().equalsIgnoreCase("0")) {
-                                    getMachineCode(oparend.getOp(), oparend.getRd(), oparend.getRs(), "00", "I");
-
-                                } else if (oparend.getRt().equalsIgnoreCase("1")) {
-                                    getMachineCode(oparend.getOp(), oparend.getRd(), oparend.getRs(), "01", "I");
-
-                                } else if (oparend.getRt().equalsIgnoreCase("2")) {
-                                    getMachineCode(oparend.getOp(), oparend.getRd(), oparend.getRs(), "10", "I");
-
-                                } else if (oparend.getRt().equalsIgnoreCase("3")) {
-                                    getMachineCode(oparend.getOp(), oparend.getRd(), oparend.getRs(), "11", "I");
-
-                                }
-
-
-                            } else {
-                                Toast.makeText(this, "Incorrect Statement in Immediate Value !!", Toast.LENGTH_SHORT).show();
-                                this.code.append("Incorrect Statement in Immediate Value !!" + "\n");
-
-                            }
-                        } else {
-
-                            Toast.makeText(this, "Incorrect Statement in RS !!", Toast.LENGTH_SHORT).show();
-                            this.code.append("Incorrect Statement RS !!" + "\n");
-
-                        }
-
-
-                    } else {
-
-                        Toast.makeText(this, "Incorrect Statement in RD !!", Toast.LENGTH_SHORT).show();
-                        this.code.append("Incorrect Statement RD !!" + "\n");
-                    }
-
-
-                } else {
-
-                    Toast.makeText(this, "InCorrect Operation Name !!", Toast.LENGTH_SHORT).show();
-                    this.code.append("InCorrect Operation Name !!!!" + "\n");
+                    //  Toast.makeText(this, " Error Occurred in RD ", Toast.LENGTH_SHORT).show();
+                    this.code.append("  Error Occurred in RD " + "\n");
                 }
 
             }
+            /*
 
 
-        } else {
+             */
 
-            Toast.makeText(this, "InComplete Statement !! ", Toast.LENGTH_SHORT).show();
-            this.code.append("InComplete Statement!!!!" + "\n");
+            else if (iType.contains(OpCode)) {
+
+                if (OpCode.equalsIgnoreCase("JUMP")) {
+
+
+                } else if (OpCode.equalsIgnoreCase("LW")) {
+
+                } else {
+                    if (registerList.contains(RD) && !RD.equalsIgnoreCase("$ZERO")) {
+
+
+                    } else {
+                        Toast.makeText(this, " Error Occurred in RD ", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+
+            } else {
+                //Toast.makeText(this, " Invalid Operation Name  ", Toast.LENGTH_SHORT).show();
+                this.code.append("  Invalid Operation Name  " + "\n");
+            }
+
 
         }
+
+
+          /*
+
+
+
+
+
+
+             */
+        else {
+
+            Toast.makeText(this, " Incorrect Statement !!! ", Toast.LENGTH_SHORT).show();
+            this.code.append("  Incorrect Statement  " + "\n");
+        }
+
+
     }
+
+    void binaryToHEX(String binary) {
+
+        String[] bit = binary.trim().split("");
+
+        String hex1 = bit[1]+bit[2]+bit[3]+bit[4];
+        String hex2 = bit[5]+bit[6]+bit[7]+ bit[8];
+        String  hex3 = bit[9]+bit[10];
+        Log.e("HEx" ,Integer.toHexString(Integer.valueOf(binary)));
+        String HEX = Integer.toHexString(Integer.valueOf(hex1)) +" "+ Integer.toHexString(Integer.valueOf(hex2))  +" "+Integer.toHexString(Integer.valueOf(hex3));
+
+
+        //    Toast.makeText(this, bit[1] + bit[2] + bit[3] + bit[4] + " " + bit[5] + bit[6] + " " + bit[7] + bit[8] + " " + bit[9] + bit[10] + "  Size : " + bit.length, Toast.LENGTH_SHORT).show();
+        Log.e(" HEX" , HEX);
+    }
+
 
     private void getMachineCode(String op, String rd, String rs, String rt, String type) {
         String code = "";
+
         if (type.equalsIgnoreCase("R")) {
             code = getOpCodeValue(op.toUpperCase()) + getRegisterValue(rd) + getRegisterValue(rs) + getRegisterValue(rt);
 
@@ -374,8 +352,8 @@ public class AssemblerActivity extends AppCompatActivity {
 
         }
 
-
         this.code.append(code + "\n");
+        binaryToHEX(code);
     }
 
     public String getOpCodeValue(String rs) {
