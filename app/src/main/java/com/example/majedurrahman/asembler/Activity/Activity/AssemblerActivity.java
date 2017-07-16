@@ -286,8 +286,8 @@ public class AssemblerActivity extends AppCompatActivity {
 
             } else if (iType.contains(OpCode) &&
                     !OpCode.equalsIgnoreCase("JUMP")
-                    && !OpCode.equalsIgnoreCase("LW")
-                    && !OpCode.equalsIgnoreCase("SW")) {
+                 /*   && !OpCode.equalsIgnoreCase("LW")
+                    && !OpCode.equalsIgnoreCase("SW")*/) {
 
 
                 if (registerList.contains(RD) && !RD.equalsIgnoreCase("$ZERO")) {
@@ -332,7 +332,7 @@ public class AssemblerActivity extends AppCompatActivity {
 
             }
 
-            else if (iType.contains(OpCode)
+         /*else if (iType.contains(OpCode)
                     &&( OpCode.equalsIgnoreCase("LW")
                     || OpCode.equalsIgnoreCase("SW"))
                     && !OpCode.equalsIgnoreCase("JUMP")){
@@ -340,7 +340,11 @@ public class AssemblerActivity extends AppCompatActivity {
                 this.code.append("Not set yet" + "\n");
                 this.hexCode.append("_____" + "\n");
 
-            }
+
+
+
+
+            }*/
 
 
             else {
@@ -357,10 +361,12 @@ public class AssemblerActivity extends AppCompatActivity {
 
             if (OpCode.equalsIgnoreCase("JUMP")) {
 
-                if (jumplength.equalsIgnoreCase("3")
-                        || jumplength.equalsIgnoreCase("2")
+                if (jumplength.equalsIgnoreCase("-1")
+                        /*|| jumplength.equalsIgnoreCase("2")*/
                         || jumplength.equalsIgnoreCase("1")
                         || jumplength.equalsIgnoreCase("0")) {
+
+
 
 
                     if(jumplength.equalsIgnoreCase("0")){
@@ -370,11 +376,11 @@ public class AssemblerActivity extends AppCompatActivity {
                     {
                         getMachineCode(OpCode,"01","00","00","JUMP");
                     }
-                    else if(jumplength.equalsIgnoreCase("2")){
+                   /* else if(jumplength.equalsIgnoreCase("2")){
                         getMachineCode(OpCode,"10","00","00","JUMP");
 
-                    }
-                    else if(jumplength.equalsIgnoreCase("3")){
+                    }*/
+                    else if(jumplength.equalsIgnoreCase("-1")){
                         getMachineCode(OpCode,"11","00","00","JUMP");
                     }
 
