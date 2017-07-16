@@ -363,7 +363,25 @@ public class AssemblerActivity extends AppCompatActivity {
                         || jumplength.equalsIgnoreCase("0")) {
 
 
+                    if(jumplength.equalsIgnoreCase("0")){
+                        getMachineCode(OpCode,"00","00","00","JUMP");
+                    }
+                    else if(jumplength.equalsIgnoreCase("1"))
+                    {
+                        getMachineCode(OpCode,"01","00","00","JUMP");
+                    }
+                    else if(jumplength.equalsIgnoreCase("2")){
+                        getMachineCode(OpCode,"10","00","00","JUMP");
+
+                    }
+                    else if(jumplength.equalsIgnoreCase("3")){
+                        getMachineCode(OpCode,"11","00","00","JUMP");
+                    }
+
+
+/*
                     getMachineCode(OpCode,jumplength,"00","00","JUMP");
+*/
                 }
                 else {
 
